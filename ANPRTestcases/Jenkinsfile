@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_HOME = 'C:\\Tools\\apache-maven-3.9.9'
+        PATH = "${env.MAVEN_HOME}\\bin;${env.PATH}"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                dir('ANPRTestcases') {
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('ANPRTestcases') {
+                    bat 'mvn clean compile'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('ANPRTestcases') {
+                    bat 'mvn test'
+                }
+            }
+        }
+
+        stage('Generate Report') {
+            steps {
+                dir('ANPRTestcases') {
+                    echo "Test report generated at target/surefire-reports"
+                }
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                dir('ANPRTestcases') {
+                    publishHTML([
+                        reportDir: 'target/surefire-reports',
+                        reportFiles: 'emailable-report.html',
+                        reportName: 'TestNG Report',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline completed"
+        }
+        success {
+            echo "🎉 Build and Tests Succeeded!"
+        }
+        failure {
+            echo "❌ Build or Tests Failed"
+        }
+    }
+}
