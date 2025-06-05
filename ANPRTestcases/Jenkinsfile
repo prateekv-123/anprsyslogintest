@@ -43,13 +43,16 @@ pipeline {
         stage('Publish Report') {
             steps {
                 dir('ANPRTestcases') {
-                    publishHTML([
-                        reportDir: 'target/surefire-reports',
-                        reportFiles: 'emailable-report.html',
-                        reportName: 'TestNG Report',
-                        keepAll: true,
-                        alwaysLinkToLastBuild: true
-                    ])
+                    script {
+                        publishHTML([
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'target/surefire-reports',
+                            reportFiles: 'emailable-report.html',
+                            reportName: 'TestNG Report'
+                        ])
+                    }
                 }
             }
         }
