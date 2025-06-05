@@ -19,22 +19,32 @@ public class LoginPage {
     @FindBy(id = "loginBtn")
     WebElement loginButton;
 
-    @FindBy(id = "eyeIcon")
-    WebElement eyeIcon;
-
     @FindBy(id = "errorMsg")
     WebElement errorMessage;
 
+    @FindBy(id = "eyeIcon")
+    WebElement eyeIcon;
+    
     public LoginPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public void enterUsername(String username) {
         wait.until(ExpectedConditions.visibilityOf(usernameField));
         usernameField.clear();
         usernameField.sendKeys(username);
+    }
+    
+    public String getPasswordFieldType() {
+        wait.until(ExpectedConditions.visibilityOf(passwordField));
+        return passwordField.getAttribute("type");
+    }
+
+    public void togglePasswordVisibility() {
+        wait.until(ExpectedConditions.elementToBeClickable(eyeIcon));
+        eyeIcon.click();
     }
 
     public void enterPassword(String password) {
@@ -46,16 +56,6 @@ public class LoginPage {
     public void clickLogin() {
         wait.until(ExpectedConditions.elementToBeClickable(loginButton));
         loginButton.click();
-    }
-
-    public String getPasswordFieldType() {
-        wait.until(ExpectedConditions.visibilityOf(passwordField));
-        return passwordField.getAttribute("type");
-    }
-
-    public void togglePasswordVisibility() {
-        wait.until(ExpectedConditions.elementToBeClickable(eyeIcon));
-        eyeIcon.click();
     }
 
     public boolean isErrorMessageDisplayed() {

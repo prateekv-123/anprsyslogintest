@@ -11,7 +11,7 @@ public class LoginTests extends BaseTest {
 
     @BeforeMethod
     public void setUpTest() {
-        driver.get("http://localhost:4777/login"); 
+        driver.get("http://localhost:4777/login");
         loginPage = new LoginPage(driver);
     }
 
@@ -50,9 +50,9 @@ public class LoginTests extends BaseTest {
     @Test
     public void passwordVisibilityToggleDoesNotWork() {
         loginPage.enterPassword("Admin@12345");
-        String typeBefore = loginPage.getPasswordFieldType(); // should be "password"
+        String typeBefore = loginPage.getPasswordFieldType();
         loginPage.togglePasswordVisibility();
-        String typeAfter = loginPage.getPasswordFieldType(); // remains "password"
+        String typeAfter = loginPage.getPasswordFieldType();
         Assert.assertEquals(typeAfter, "password", "Password visibility toggle is not working");
     }
 
@@ -139,7 +139,7 @@ public class LoginTests extends BaseTest {
 
     @Test
     public void loginWithExpiredAccount() {
-        loginPage.enterUsername("expiredUser");  
+        loginPage.enterUsername("expiredUser");
         loginPage.enterPassword("Admin@12345");
         loginPage.clickLogin();
         Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "Expired account should not be able to log in");
