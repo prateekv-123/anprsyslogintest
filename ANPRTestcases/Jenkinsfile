@@ -7,12 +7,9 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
-                dir('ANPRTestcases') {
-                    checkout scm
-                }
+                checkout scm
             }
         }
 
@@ -34,25 +31,21 @@ pipeline {
 
         stage('Generate Report') {
             steps {
-                dir('ANPRTestcases') {
-                    echo "Test report generated at target/surefire-reports"
-                }
+                echo "Test report generated at ANPRTestcases/target/surefire-reports"
             }
         }
 
         stage('Publish Report') {
             steps {
-                dir('ANPRTestcases') {
-                    script {
-                        publishHTML([
-                            allowMissing: false,
-                            alwaysLinkToLastBuild: true,
-                            keepAll: true,
-                            reportDir: 'target/surefire-reports',
-                            reportFiles: 'emailable-report.html',
-                            reportName: 'TestNG Report'
-                        ])
-                    }
+                script {
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'ANPRTestcases/target/surefire-reports',
+                        reportFiles: 'emailable-report.html',
+                        reportName: 'TestNG Report'
+                    ])
                 }
             }
         }
